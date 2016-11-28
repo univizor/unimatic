@@ -1,0 +1,41 @@
+---
+- name: Add PGDG Postgres repository
+  shell: "wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -"
+  sudo: False
+  tags:
+    - setup
+    - pg
+
+- name: Add PGDG Postgres repository
+  apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main'
+  tags:
+    - setup
+    - pg
+  sudo: False
+  notify: update apt cache
+
+- name: install Postgres database
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+    - postgresql-{{pg_version}}
+    - postgresql-client-{{pg_version}}
+    - postgresql-contrib-{{pg_version}}
+  sudo: False
+  tags:
+    - setup
+    - pg
+  notify: start postgresql service 
+
+- name: transfer postgresql.conf configuration file
+  template: src=postgresql.conf.j2 dest='/etc/postgresql/{{pg_version}}/main/postgresql.conf' owner=postgres group=postgres mode=0644 backup=yes
+  tags:
+    - setup
+    - pg
+  notify: restart postgresql service
+
+- name: transfer pg_hba.conf configuration file
+  template: src=pg_hba.conf.j2 dest='/etc/postgresql/{{pg_version}}/main/pg_hba.conf' owner=postgres group=postgres mode=0600 backup=yes
+  tags:
+    - setup
+    - pg
+  notify: restart postgresql service

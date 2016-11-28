@@ -1,0 +1,22 @@
+---
+- name: create a user with UID 3000, used for setting permissions for Docker host volumes
+  user: name='{{u3_host_volume_user}}' uid=3000 shell=/bin/false createhome=no comment="Used to set Docker host volumes permissions" state=present
+  tags:
+    - users
+    - setup
+    - docker
+
+- name: make sure that user is locked
+  shell: "usermod -L {{u3_host_volume_user}}"
+  tags:
+    - users
+    - setup
+    - docker
+
+- name: Add dd-agent user to docker group, so it can read docker socket
+  user: name=dd-agent groups=docker
+  when: ddagent == True
+  tags:
+    - monitor
+  notify: restart datadog-agent
+

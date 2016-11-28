@@ -1,0 +1,11 @@
+- name: create a user with UID 1000, used for setting permissions for Docker host volumes 
+  user: name=hostvol uid=1000 shell=/bin/false createhome=no comment="Used to set Docker host volumes permissions" state=present
+  tags:
+    - users
+    - setup
+
+- name: make sure that user is locked
+  shell: "usermod -L hostvol"
+  tags:
+    - users
+    - setup

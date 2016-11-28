@@ -1,0 +1,20 @@
+---
+- name: start postgresql service
+  service: name=postgresql enabled=yes state=started
+  sudo: False
+  tags:
+    - setup
+    - pg
+
+- name: restart postgresql service
+  service: name=postgresql state=restarted
+  sudo: False
+  tags:
+    - pg
+
+- name: update apt cache
+  apt: update_cache=yes
+  sudo: False
+  tags:
+    - setup
+    - pg 

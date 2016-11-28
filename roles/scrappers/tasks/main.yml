@@ -1,0 +1,3 @@
+---
+- name: check permissions set to scrapers containers volume path
+  file: path='{{u3_host_volume}}' state=directory owner='{{u3_host_volume_user}}' group='{{u3_host_volume_group}}' mode=0644

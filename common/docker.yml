@@ -1,0 +1,6 @@
+- name: install the usual Docker stuff
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - docker-engine
+  sudo: False
+

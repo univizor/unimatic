@@ -1,0 +1,46 @@
+---
+- name: Manage the univizor hosts
+  hosts: all
+  user: root
+  sudo: False
+  vars_files:
+    - vars/vars_prod.yml
+
+  roles:
+    - common
+    - { role: users-groups, ddagent: False } 
+    - ufw
+    - docker-host
+    - postgres
+  tags: ['setup']
+
+- name: Deploy the DataDog role
+  hosts: all
+  user: root
+  sudo: False
+  vars_files:
+    - vars/vars_prod.yml
+  roles:
+    - Datadog.datadog
+    - { role: users-groups, ddagent: True }
+  vars:
+    datadog_api_key: '{{ dd_api_key }}'
+    datadog_config:
+      log_level: INFO 
+    datadog_checks:
+      process:
+        - name: ssh
+          search_string: ['ssh', 'sshd' ]
+        - name: syslog
+          search_string: ['rsyslog' ]
+          cpu_check_interval: 0.2
+          exact_match: true
+          ignore_denied_access: true
+      docker_daemon:
+        init_config:
+        instances:
+          - url: "unix://var/run/docker.sock"
+            performance_tags: ["container_name","image_name","image_tag","docker_image"]
+            container_tags: ["image_name", "image_tag", "docker_image"]
+  tags: ['monitor']
+

@@ -1,0 +1,8 @@
+- name: Make sure that ntp is up and running
+  service: name=ntp state=stopped
+
+- name: Make sure fail2ban is up and running
+  service: name=fail2ban state=started
+
+- name: Make sure Docker is up and running
+  service: name=docker state=started 

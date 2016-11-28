@@ -1,0 +1,19 @@
+- name: install set of Docker specific kernel packages and tools
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+    - linux-image-extra-virtual
+    - linux-image-extra-virtual-lts-{{ ansible_distribution_release }}
+  sudo: False
+  tags: 
+    - setup
+
+- name: install Postgres database
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+    - postgresql-{{pg_version}}
+    - postgresql-client-{{pg_version}}
+    - postgresql-contrib-{{pg_version}}
+  sudo: False
+  tags:
+    - setup
+    - pg

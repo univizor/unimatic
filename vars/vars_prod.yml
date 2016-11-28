@@ -1,0 +1,5 @@
+pg_version: '9.6'
+dd_api_key: '123456789000'
+u3_host_volume: '/srv/data/u3data'
+u3_host_volume_user: 'u3vol'
+u3_host_volume_group: 'u3vol'

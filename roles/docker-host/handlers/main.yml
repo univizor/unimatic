@@ -1,0 +1,11 @@
+---
+- name: refresh docker repos
+  apt: update_cache=yes
+  sudo: False
+  tags:
+    - setup
+    - docker
+
+- name: restart docker service
+  service: name=docker state=started enabled=yes
+  sudo: False
