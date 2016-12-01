@@ -1,0 +1,31 @@
+---
+- name: check permissions set to scrapers containers volume path
+  file: path='{{u3_host_volume}}' state=directory owner='{{u3_host_volume_user}}' group='{{u3_host_volume_group}}' mode=0644
+
+- name: pull scraper image before any container work
+  docker_image:
+    name: '{{scraper_image}}'
+
+- name: manage rul scraper
+  docker_container:
+    name: '{{rul_name}}'
+    image: '{{scraper_image}}'
+    state: '{{rul_state}}'
+    command: '{{rul_command}}'
+    volumes: 
+      - '{{scraper_volume}}'
+    env:
+      DATABASE_URL: '{{scraper_db_url}}'
+      FILES_STORE: './data/files/{{ rul_name }}'
+
+- name: manage bf scraper
+  docker_container:
+    name: '{{bf_name}}'
+    image: '{{scraper_image}}'
+    state:  '{{bf_state}}'
+    command: '{{bf_command}}'
+    volumes:
+      - '{{scraper_volume}}'
+    env:
+      DATABASE_URL: '{{scraper_db_url}}'
+      FILES_STORE: './data/files/{{ bf_name }}'

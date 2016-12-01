@@ -1,0 +1,16 @@
+---
+# General scraper containers settings
+scraper_db_url: 'postgresql://user:name:@127.0.0.1:5432/u3'
+scraper_volume: '/srv/data/u3data/files:/home/u3/data/files:rw'
+scraper_image: 'univizor/u3:latest'
+
+# Per scraper settings
+# rul
+rul_name: 'rul'
+rul_state: 'stopped' # options: started, stopped, present, absent
+rul_command: 'rul -a mode=refresh -a pages=2000'
+
+# bf
+bf_name: 'bf'
+bf_state: 'stopped' # options: started, stopped, present, absent
+bf_command: 'bf'
