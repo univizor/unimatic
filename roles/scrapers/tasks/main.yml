@@ -5,6 +5,7 @@
 - name: pull scraper image before any container work
   docker_image:
     name: '{{scraper_image}}'
+    force: yes
 
 - name: manage rul scraper
   docker_container:
@@ -14,9 +15,11 @@
     command: '{{rul_command}}'
     volumes: 
       - '{{scraper_volume}}'
+    log_driver: '{{scraper_log_driver}}'
     env:
       DATABASE_URL: '{{scraper_db_url}}'
       FILES_STORE: './data/files/{{ rul_name }}'
+      SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
 
 - name: manage bf scraper
   docker_container:
@@ -26,6 +29,50 @@
     command: '{{bf_command}}'
     volumes:
       - '{{scraper_volume}}'
+    log_driver: '{{scraper_log_driver}}'
     env:
       DATABASE_URL: '{{scraper_db_url}}'
       FILES_STORE: './data/files/{{ bf_name }}'
+      SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+
+- name: manage dkum scraper
+  docker_container:
+    name: '{{dkum_name}}'
+    image: '{{scraper_image}}'
+    state:  '{{dkum_state}}'
+    command: '{{dkum_command}}'
+    volumes:
+      - '{{scraper_volume}}'
+    log_driver: '{{scraper_log_driver}}'
+    env:
+      DATABASE_URL: '{{scraper_db_url}}'
+      FILES_STORE: './data/files/{{ dkum_name }}'
+      SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+
+- name: manage fammit scraper
+  docker_container:
+    name: '{{fammit_name}}'
+    image: '{{scraper_image}}'
+    state:  '{{fammit_state}}'
+    command: '{{fammit_command}}'
+    volumes:
+      - '{{scraper_volume}}'
+    log_driver: '{{scraper_log_driver}}'
+    env:
+      DATABASE_URL: '{{scraper_db_url}}'
+      FILES_STORE: './data/files/{{ fammit_name }}'
+      SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+
+- name: manage ung scraper
+  docker_container:
+    name: '{{ung_name}}'
+    image: '{{scraper_image}}'
+    state:  '{{ung_state}}'
+    command: '{{ung_command}}'
+    volumes:
+      - '{{scraper_volume}}'
+    log_driver: '{{scraper_log_driver}}'
+    env:
+      DATABASE_URL: '{{scraper_db_url}}'
+      FILES_STORE: './data/files/{{ ung_name }}'
+      SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 

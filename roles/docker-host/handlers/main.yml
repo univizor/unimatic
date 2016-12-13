@@ -7,5 +7,5 @@
     - docker
 
 - name: restart docker service
-  service: name=docker state=started enabled=yes
+  systemd: name=docker state=restarted enabled=yes daemon-reload=yes
   sudo: False

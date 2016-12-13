@@ -31,3 +31,16 @@
     - setup
     - docker
 
+- name: Create docker cofniguration override directory for systemctl
+  file: path='/etc/systemd/system/docker.service.d' state=directory owner='root' group='root' mode=0644
+  tags:
+    - setup
+    - docker
+
+- name: Upload custom dockerd configuration for logging to journalctl
+  template: src=dockerd.conf.j2 dest='/etc/systemd/system/docker.service.d/dockerd.conf' owner=root group=root mode=0644
+  notify:
+    - restart docker service
+  tags:
+    - setup
+    - docker
