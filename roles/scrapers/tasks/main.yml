@@ -7,6 +7,25 @@
     name: '{{scraper_image}}'
     force: yes
 
+- name: pull datadog image before any container work
+  docker_image:
+    name: '{{dd_image}}'
+    force: yes
+
+- name: Before any scrapers are setup, we need to setup Datadog stats container
+  docker_container:
+    name: '{{dd_container_name}}'
+    image: '{{dd_image}}'
+    state: '{{dd_state}}'
+    command: '{{dd_command}}'
+    log_driver: '{{dd_log_driver}}'
+    volumes:
+      - '{{dd_docker_socket_volume}}'
+    env:
+      API_KEY: '{{dd_env_api_key}}'
+      LOG_LEVEL: '{{dd_env_log_level}}'
+      DD_LOG_LEVEL: '{{dd_env_log_level}}'
+
 - name: manage rul scraper
   docker_container:
     name: '{{rul_name}}'
@@ -20,6 +39,8 @@
       DATABASE_URL: '{{scraper_db_url}}'
       FILES_STORE: './data/files/{{ rul_name }}'
       SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+    links:
+      - '{{dd_container_name}}'
 
 - name: manage bf scraper
   docker_container:
@@ -34,6 +55,8 @@
       DATABASE_URL: '{{scraper_db_url}}'
       FILES_STORE: './data/files/{{ bf_name }}'
       SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+    links:
+      - '{{dd_container_name}}'
 
 - name: manage dkum scraper
   docker_container:
@@ -48,6 +71,8 @@
       DATABASE_URL: '{{scraper_db_url}}'
       FILES_STORE: './data/files/{{ dkum_name }}'
       SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+    links:
+      - '{{dd_container_name}}'
 
 - name: manage fammit scraper
   docker_container:
@@ -62,6 +87,8 @@
       DATABASE_URL: '{{scraper_db_url}}'
       FILES_STORE: './data/files/{{ fammit_name }}'
       SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+    links:
+      - '{{dd_container_name}}'
 
 - name: manage ung scraper
   docker_container:
@@ -76,3 +103,5 @@
       DATABASE_URL: '{{scraper_db_url}}'
       FILES_STORE: './data/files/{{ ung_name }}'
       SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+    links:
+      - '{{dd_container_name}}'

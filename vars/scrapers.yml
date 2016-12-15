@@ -6,6 +6,17 @@ scraper_image: 'univizor/u3:latest'
 scraper_log_driver: 'journald'
 scraper_sentry_dsn: '' # Provide and add to containers env if available
 
+# Datadog container settings
+dd_container_name: 'ddstats'
+dd_image: 'datadog/docker-dogstatsd'
+dd_state: 'started'
+dd_command: ''
+dd_log_driver: 'journald'
+dd_docker_socket_volume: '/var/run/docker.sock:/var/run/docker.sock:ro'
+## Env variables for DD
+dd_env_api_key: 'api1234'
+dd_env_log_level: 'DEBUG'
+
 # Per scraper settings
 # rul
 rul_name: 'rul'
