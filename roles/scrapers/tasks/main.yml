@@ -1,6 +1,9 @@
 ---
 - name: check permissions set to scrapers containers volume path
-  file: path='{{u3_host_volume}}' state=directory owner='{{u3_host_volume_user}}' group='{{u3_host_volume_group}}' mode=0644
+  file: path='{{u3_host_volume}}' state=directory owner='{{u3_host_volume_user}}' group='{{u3_host_volume_group}}' mode=0750
+
+- name: check permissions set to scrapers containers temp volume path
+  file: path=/srv/data/u3data/tmp state=directory owner='{{u3_host_volume_user}}' group='{{u3_host_volume_group}}' mode=0750
 
 - name: pull scraper image before any container work
   docker_image:
@@ -25,6 +28,7 @@
       API_KEY: '{{dd_env_api_key}}'
       LOG_LEVEL: '{{dd_env_log_level}}'
       DD_LOG_LEVEL: '{{dd_env_log_level}}'
+      U3_ENV: '{{u3_env}}'
 
 - name: manage rul scraper
   docker_container:
@@ -39,6 +43,7 @@
       DATABASE_URL: '{{scraper_db_url}}'
       FILES_STORE: './data/files/{{ rul_name }}'
       SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+      U3_ENV: '{{u3_env}}'
     links:
       - '{{dd_container_name}}'
 
@@ -55,6 +60,7 @@
       DATABASE_URL: '{{scraper_db_url}}'
       FILES_STORE: './data/files/{{ bf_name }}'
       SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+      U3_ENV: '{{u3_env}}'
     links:
       - '{{dd_container_name}}'
 
@@ -66,11 +72,13 @@
     command: '{{dkum_command}}'
     volumes:
       - '{{scraper_volume}}'
+      - '{{scraper_tmp_volume}}'
     log_driver: '{{scraper_log_driver}}'
     env:
       DATABASE_URL: '{{scraper_db_url}}'
       FILES_STORE: './data/files/{{ dkum_name }}'
       SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+      U3_ENV: '{{u3_env}}'
     links:
       - '{{dd_container_name}}'
 
@@ -87,6 +95,7 @@
       DATABASE_URL: '{{scraper_db_url}}'
       FILES_STORE: './data/files/{{ fammit_name }}'
       SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+      U3_ENV: '{{u3_env}}'
     links:
       - '{{dd_container_name}}'
 
@@ -103,5 +112,6 @@
       DATABASE_URL: '{{scraper_db_url}}'
       FILES_STORE: './data/files/{{ ung_name }}'
       SENTRY_DSN: '{{scraper_sentry_dsn}}' # Sentry DSN if available 
+      U3_ENV: '{{u3_env}}'
     links:
       - '{{dd_container_name}}'

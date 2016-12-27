@@ -20,3 +20,10 @@
 
 - name: prepare u3 data dir for docker volumes
   file: state=directory path=/srv/data/u3data recurse=yes
+  tags:
+    - setup
+
+- name: prepare u3 data temp dir for docker volumes
+  file: state=directory path=/srv/data/u3data/tmp recurse=yes
+  tags:
+    - setup

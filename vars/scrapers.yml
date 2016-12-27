@@ -2,6 +2,7 @@
 # General scraper containers settings
 scraper_db_url: 'postgresql://user:name:@127.0.0.1:5432/u3'
 scraper_volume: '/srv/data/u3data/files:/home/u3/data/files:rw'
+scraper_tmp_volume: '/srv/data/u3data/tmp:/home/u3/tmp:rw'
 scraper_image: 'univizor/u3:latest'
 scraper_log_driver: 'journald'
 scraper_sentry_dsn: '' # Provide and add to containers env if available
