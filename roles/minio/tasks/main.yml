@@ -1,0 +1,23 @@
+- name: pull minio image before any container work
+  docker_image:
+    name: '{{minio_image}}'
+    force: yes
+
+- name: allow port 9000 for to get minio port published
+  ufw: rule=allow direction=in port=9000 proto=tcp
+  sudo: True
+
+- name: Start minio container
+  docker_container:
+    name: '{{minio_name}}'
+    image: '{{minio_image}}'
+    state: '{{minio_state}}'
+    command: '{{minio_command}}'
+    log_driver: '{{minio_log_driver}}'
+    published_ports: '{{minio_ports}}'
+    volumes:
+      - '{{minio_config_vol}}'
+      - '{{minio_data_vol}}'
+    env:
+      MINIO_ACCESS_KEY: '{{minio_access_key}}'
+      MINIO_SECRET_KEY: '{{minio_secret_key}}'

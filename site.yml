@@ -55,3 +55,14 @@
     - scrapers
 
   tags: ['scrapers']
+
+- name: Manage minio
+  hosts: minio
+  user: root
+  sudo: False
+  vars_files:
+    - vars/minio.local.yml
+  roles:
+    - minio
+
+  tags: ['minio']

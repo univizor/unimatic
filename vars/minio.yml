@@ -1,0 +1,12 @@
+---
+# Vars to manage minio container(s)
+minio_name: 'minio'
+minio_image: 'minio/minio'
+minio_state: 'started'
+minio_command: 'server /export'
+minio_log_driver: 'json-file'
+minio_ports: '9000:9000'
+minio_config_vol: '/mnt/config/s3:/root/.minio:rw'
+minio_data_vol: '/mnt/export/s3:/export:rw'
+minio_access_key: '20randomcharsomething'
+minio_secret_key: '40randomcharsomethingsomething'
