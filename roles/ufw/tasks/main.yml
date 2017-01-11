@@ -31,7 +31,18 @@
   ufw: rule=allow direction=in port=ssh proto=tcp
   sudo: True
   tags:
-    - setup
+    - ufw
+
+- name: allow incoming http
+  ufw: rule=allow direction=in port=http proto=tcp
+  sudo: True
+  tags:
+    - ufw
+
+- name: allow incoming 2222
+  ufw: rule=allow direction=in port=2222 proto=tcp
+  sudo: True
+  tags:
     - ufw
 
 - name: at the end of configuring, enable and reload ufw

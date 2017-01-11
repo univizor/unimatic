@@ -25,6 +25,16 @@
     - setup
     - docker
 
+- name: Get docker-compose
+  get_url:
+    url: '{{docker_compose_url}}'
+    checksum: '{{docker_compose_chksum}}'
+    dest: /usr/local/bin/docker-compose
+    mode: 0777
+  tags:
+    - setup
+    - docker
+
 - name: allow all incoming traffic on docker0 interface from docker vms
   ufw: interface=docker0 direction=in rule=allow src=172.17.0.1/16
   tags:
